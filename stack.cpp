@@ -10,27 +10,20 @@ bool isEmpty(const Stack* s) {
 }
 
 bool isFull(const Stack* s) {
-    return s->top >= s->data + MAX - 1;
+    return s->top == s->data + MAX - 1;
 }
 
 void push(Stack* s, int value) {
-    if (isFull(s)) {
-        throw std::overflow_error("Stack overflow: stack is full");
-    }
-    s->top++;
-    *s->top = value;
+    if (isFull(s)) throw std::overflow_error("Stack is full");
+    *(++s->top) = value;
 }
 
 void pop(Stack* s) {
-    if (isEmpty(s)) {
-        throw std::underflow_error("Stack underflow: stack is empty");
-    }
+    if (isEmpty(s)) throw std::underflow_error("Stack is empty");
     s->top--;
 }
 
 int peek(const Stack* s) {
-    if (isEmpty(s)) {
-        throw std::underflow_error("Stack is empty: no element to peek");
-    }
-    return *s->top;
+    if (isEmpty(s)) throw std::underflow_error("Stack is empty");
+    return *(s->top);
 }
