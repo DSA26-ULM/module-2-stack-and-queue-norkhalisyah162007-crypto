@@ -1,44 +1,31 @@
 #include "queue.h"
-#include <stdexcept>
+#include <iostream>
 
-void init(Queue* q) {
-    q->front = q->data - 1;
-    q->rear  = q->data - 1;
-}
+int main() {
+    int n, k;
+    std::cin >> n >> k;
 
-bool isEmpty(const Queue* q) {
-    return q->front == q->rear;
-}
+    int arr[100];
+    for (int i = 0; i < n; i++) std::cin >> arr[i];
 
-bool isFull(const Queue* q) {
-    return q->rear == q->data + MAX - 1;
-}
+    bool first = true;
 
-void enqueue(Queue* q, int value) {
-    if (isFull(q)) {
-        throw std::overflow_error("Queue overflow: queue is full");
+    for (int i = 0; i <= n - k; i++) {
+        Queue q;
+        init(&q);
+        for (int j = i; j < i + k; j++) enqueue(&q, arr[j]);
+
+        int sum = 0;
+        while (!isEmpty(&q)) {
+            sum += front(&q);
+            dequeue(&q);
+        }
+
+        if (!first) std::cout << " ";
+        std::cout << sum;
+        first = false;
     }
-    q->rear++;
-    *(q->rear) = value;
-}
 
-void dequeue(Queue* q) {
-    if (isEmpty(q)) {
-        throw std::underflow_error("Queue underflow: queue is empty");
-    }
-    q->front++;
-}
-
-int front(const Queue* q) {
-    if (isEmpty(q)) {
-        throw std::underflow_error("Queue is empty: no front element");
-    }
-    return *(q->front + 1);
-}
-
-int back(const Queue* q) {
-    if (isEmpty(q)) {
-        throw std::underflow_error("Queue is empty: no back element");
-    }
-    return *(q->rear);
+    std::cout << std::endl;
+    return 0;
 }
